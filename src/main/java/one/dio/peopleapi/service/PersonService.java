@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
 import one.dio.peopleapi.dto.MessageResponseDTO;
 import one.dio.peopleapi.dto.request.PersonDTO;
 import one.dio.peopleapi.entity.Person;
@@ -14,16 +15,12 @@ import one.dio.peopleapi.mapper.PersonMapper;
 import one.dio.peopleapi.repository.PersonRepository;
 
 @Service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PersonService {
 
 	private PersonRepository personRepository;
 
 	private final PersonMapper personMapper = PersonMapper.INSTANCE;
-
-	@Autowired
-	public PersonService(PersonRepository personRepository) {
-		this.personRepository = personRepository;
-	}
 
 	//---------// CREATE PERSON //---------//
 	
