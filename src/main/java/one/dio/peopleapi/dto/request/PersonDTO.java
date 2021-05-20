@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import one.dio.peopleapi.entity.Phone;
 
 @Data
 @Builder
@@ -38,6 +37,6 @@ public class PersonDTO {
 
 	@NotEmpty
 	@Valid
-	private List<Phone> phones;
+	private List<PhoneDTO> phones;
 
 }
