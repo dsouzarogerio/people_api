@@ -125,6 +125,14 @@ public class PersonControllerTest {
 				.andExpect(jsonPath("$.message", is(expectedResponseMessage.getMessage())));				
 	}
 	
+	@Test
+	void testWhenDELETEIsCalledThenAPersonShouldBeDeleted() throws Exception {
+		var expectedValidId = 1L;
+		
+		mockMvc.perform(delete(PEOPLE_API_URL_PATH + "/" + expectedValidId)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNoContent());
+	}
 
 
 
