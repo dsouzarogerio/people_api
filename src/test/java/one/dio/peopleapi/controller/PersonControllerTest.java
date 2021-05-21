@@ -109,6 +109,22 @@ public class PersonControllerTest {
 				.andExpect(jsonPath("$[0].firstName", is("Rogério")))
 				.andExpect(jsonPath("$[0].lastName", is("de Souza")));				
 	}
+	
+	@Test
+	void testWhenPUTIsCalledThenAPersonShouldBeReturned() throws Exception {
+		var expectedValidId = 1L;
+		PersonDTO expectedPersonDTO = createFakeDTO();
+		MessageResponseDTO expectedResponseMessage = createMessageResponse("Person successfully updated with ID", 1l);
+		
+		when(personService.updateById(expectedValidId, expectedPersonDTO)).thenReturn(expectedResponseMessage);
+
+		mockMvc.perform(put(PEOPLE_API_URL_PATH + "/" + expectedValidId)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(asJsonString(expectedPersonDTO)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.message", is(expectedResponseMessage.getMessage())));				
+	}
+	
 
 
 
