@@ -24,6 +24,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import one.dio.peopleapi.dto.request.PersonDTO;
 import one.dio.peopleapi.dto.response.MessageResponseDTO;
+import one.dio.peopleapi.exception.PersonNotFoundException;
 import one.dio.peopleapi.service.PersonService;
 
 @ExtendWith(MockitoExtension.class)
@@ -75,6 +76,20 @@ public class PersonControllerTest {
 				.andExpect(jsonPath("$.lastName", is("de Souza")));
 				
 	}
+	
+	@Test
+	void testWhenGETWithInvalidIsCalledThenAnErrorMessageShouldBeReturned() throws Exception {
+		var expectedValidId = 1L;
+		PersonDTO expectedPersonDTO = createFakeDTO();
+		expectedPersonDTO.setId(expectedValidId);
+		
+		when(personService.findById(expectedValidId)).thenThrow(PersonNotFoundException.class);
+
+		mockMvc.perform(get(PEOPLE_API_URL_PATH + "/" + expectedValidId)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());				
+	}
+
 
 	private MessageResponseDTO createMessageResponse(String message, Long id) {
 		return MessageResponseDTO
