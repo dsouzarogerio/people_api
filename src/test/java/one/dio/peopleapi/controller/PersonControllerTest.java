@@ -11,6 +11,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -89,6 +92,24 @@ public class PersonControllerTest {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());				
 	}
+	
+	@Test
+	void testWhenGETCalledThenPeopleListShouldBeReturned() throws Exception {
+		var expectedValidId = 1L;
+		PersonDTO expectedPersonDTO = createFakeDTO();
+		expectedPersonDTO.setId(expectedValidId);
+		List<PersonDTO> expectedPeopleDTOList = Collections.singletonList(expectedPersonDTO);
+		
+		when(personService.listAll()).thenReturn(expectedPeopleDTOList);
+
+		mockMvc.perform(get(PEOPLE_API_URL_PATH)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].id", is(1)))
+				.andExpect(jsonPath("$[0].firstName", is("Rogério")))
+				.andExpect(jsonPath("$[0].lastName", is("de Souza")));				
+	}
+
 
 
 	private MessageResponseDTO createMessageResponse(String message, Long id) {
