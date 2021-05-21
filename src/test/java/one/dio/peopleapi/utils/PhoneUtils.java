@@ -5,7 +5,7 @@ import one.dio.peopleapi.entity.Phone;
 import one.dio.peopleapi.enums.PhoneType;
 
 public class PhoneUtils {
-	private static final String PHONE_NUMBER = "62991237456";
+	private static final String PHONE_NUMBER = "(62)99123-7456";
 	private static final PhoneType PHONE_TYPE = PhoneType.MOBILE;
 	private static final Long PHONE_ID = 1L;
 	

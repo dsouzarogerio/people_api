@@ -8,11 +8,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import one.dio.peopleapi.dto.MessageResponseDTO;
 import one.dio.peopleapi.dto.request.PersonDTO;
+import one.dio.peopleapi.dto.response.MessageResponseDTO;
 import one.dio.peopleapi.entity.Person;
 import one.dio.peopleapi.repository.PersonRepository;
 import one.dio.peopleapi.utils.PersonUtils;
+
+import static one.dio.peopleapi.utils.PersonUtils.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonServiceTest {
@@ -25,16 +29,15 @@ public class PersonServiceTest {
 
 	@Test
 	void testGivenPersonDTOThenReturnSavedMessage() {
+		PersonDTO personDTO = createFakeDTO();
+		Person expectedSavedPerson = createFakeEntity();
 
-		PersonDTO personDTO = PersonUtils.createFakeDTO();
-		Person expectedSavedPerson = PersonUtils.createFakeEntity();
-
-		Mockito.when(personRepository.save(Mockito.any(Person.class))).thenReturn(expectedSavedPerson);
+		when(personRepository.save(any(Person.class))).thenReturn(expectedSavedPerson);
 
 		MessageResponseDTO expectedSuccesMessage = createExpectedMessageResponse(expectedSavedPerson.getId());
 		MessageResponseDTO succesMessage = personService.createPerson(personDTO);
 
-		Assertions.assertEquals(expectedSuccesMessage, succesMessage);
+		assertEquals(expectedSuccesMessage, succesMessage);
 	}
 
 	private MessageResponseDTO createExpectedMessageResponse(Long id) {

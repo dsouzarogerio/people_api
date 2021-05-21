@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
-import one.dio.peopleapi.dto.MessageResponseDTO;
 import one.dio.peopleapi.dto.request.PersonDTO;
+import one.dio.peopleapi.dto.response.MessageResponseDTO;
 import one.dio.peopleapi.entity.Person;
 import one.dio.peopleapi.exception.PersonNotFoundException;
 import one.dio.peopleapi.mapper.PersonMapper;

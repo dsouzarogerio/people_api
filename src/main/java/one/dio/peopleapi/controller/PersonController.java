@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import one.dio.peopleapi.dto.MessageResponseDTO;
 import one.dio.peopleapi.dto.request.PersonDTO;
+import one.dio.peopleapi.dto.response.MessageResponseDTO;
 import one.dio.peopleapi.exception.PersonNotFoundException;
 import one.dio.peopleapi.service.PersonService;
 
