@@ -4,7 +4,10 @@ import static one.dio.peopleapi.utils.PersonUtils.asJsonString;
 import static one.dio.peopleapi.utils.PersonUtils.createFakeDTO;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -50,11 +53,27 @@ public class PersonControllerTest {
 
 		when(personService.createPerson(expectedPersonDTO)).thenReturn(expectedResponseMessage);
 
-		mockMvc.perform(post(PEOPLE_API_URL_PATH)
+		mockMvc.perform(post(PEOPLE_API_URL_PATH).contentType(MediaType.APPLICATION_JSON)
+				.content(asJsonString(expectedPersonDTO))).andExpect(status().isCreated())
+				.andExpect(jsonPath("$.message", is(expectedResponseMessage.getMessage())));
+	}
+
+	@Test
+	void testWhenGETWithValidIsCalledThenAPersonShouldBeReturned() throws Exception {
+		var expectedValidId = 1L;
+		PersonDTO expectedPersonDTO = createFakeDTO();
+		expectedPersonDTO.setId(expectedValidId);
+		;
+		when(personService.findById(expectedValidId)).thenReturn(expectedPersonDTO);
+
+		mockMvc.perform(get(PEOPLE_API_URL_PATH + "/" + expectedValidId)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(asJsonString(expectedPersonDTO)))
-				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.message", is(expectedResponseMessage.getMessage())));
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id", is(1)))
+				.andExpect(jsonPath("$.firstName", is("Rogério")))
+				.andExpect(jsonPath("$.lastName", is("de Souza")));
+				
 	}
 
 	private MessageResponseDTO createMessageResponse(String message, Long id) {
